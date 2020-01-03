@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <!-- DataTables- DT style (https://datatables.net/)-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="  crossorigin="anonymous"></script>    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
+
+
+    <title>openAPI</title>
+    
+</head>
+<body>
+
+    <h1>新北市公共自行車租賃系統(YouBike)</h1>
+        <table class="table" id="dt">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">場站區域</th>
+                    <th scope="col">場站名稱</th>
+                    <th scope="col">地址</th>
+                    <th scope="col">總停車格</th>
+                    <th scope="col">可借車位數</th>
+                    <th scope="col">可還空位數</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+
+
+
+
+
+
+    <script>
+
+        var data;
+
+        $.getJSON(
+          "youbike_api.php"
+        ).done(function(e) {
+            data = e;
+        
+            //sarea(中文場站區域) sna(中文場站名稱) ar(中文地址) tot(場站總停車格) sbi(可借車位數) bemp(可還空位數)
+            let print="";
+
+            for(let i=0;i<data.result.records.length;i++){
+                print+=`
+                <tr>
+                    <td>${data.result.records[i].sarea}</td>
+                    <td>${data.result.records[i].sna}</td>
+                    <td>${data.result.records[i].ar}</td>
+                    <td>${data.result.records[i].tot}</td>
+                    <td>${data.result.records[i].sbi}</td>
+                    <td>${data.result.records[i].bemp}</td>
+                </tr>
+                `;
+            }
+            $("tbody").html(print);
+            $('#dt').DataTable();
+        }).fail(function(){
+        alert("this's open-api got fail");
+        });        
+
+    </script>
+
+
+</body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+</html>
